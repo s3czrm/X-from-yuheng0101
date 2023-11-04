@@ -1,3 +1,10 @@
+/******************************************
+ * @name 爽翻
+ * @channel https://t.me/yqc_123
+ * @feedback https://t.me/yqc_777
+ * @update 20231101
+ * @version 1.0.0
+******************************************/
 const $ = new Env('爽翻')
 var body = $response.body.replace(/^\"|\"$/g, '')
 ;(async () => {
