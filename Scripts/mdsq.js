@@ -94,13 +94,13 @@ let body = $response.body
         decrypted.code = 200200
         decrypted.msg = ''
         decrypted.playable = true
-        decrypted.watchCount = 999
         decrypted.mediaInfo.isBuy = true
         decrypted.mediaInfo.price = 0
         decrypted.mediaInfo.preVideoUrl = ''
         decrypted.mediaInfo.payType = 1
         decrypted.mediaInfo.videoType = 1
         decrypted.mediaInfo.subType = 1
+        decrypted.mediaInfo.preTime = decrypted.mediaInfo.playTime
     }
     if (/short\/recommend/.test(url)) {
         decrypted.mediaList.map((item) => (item.isBuy = true))
