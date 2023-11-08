@@ -3,49 +3,64 @@
  * @description 好男人专用脚本
  * @channel https://t.me/yqc_123
  * @feedback https://t.me/yqc_777
- * @version 1.0.4
+ * @version 1.0.5
 ******************************************
 ## 更新日志
-### 20231021
-  #### 适配Surge
-  > 可以使用👉[模块](https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp/lsp.sgmodule)
 
-  > 亦可使用Script Hub直接转换该脚本
+### 20231108
+
+> 修复撸先生播放问题、去除全局广告
+
+> 增加一条快手的域名
+
+### 20231021
+
+#### 适配 Surge
+
+> 可以使用 👉[模块](https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp/lsp.sgmodule)
+
+> 亦可使用 Script Hub 直接转换该脚本
+
 ### 20231018
-  > 删除91av, 增加抖阴Porn
+
+> 删除 91av, 增加抖阴 Porn
 
 ## 脚本注明
-  1. 脚本只是针对基于Quantumult X和Surge对Javascript和WEB逆向的学习，不得用于商业用途，否则后果自负。
-  2. 不保证脚本合法性、准确性、有效性，请根据情况自行判断，本人对此不承担任何保证责任。
-  3. 本人对任何脚本引发的问题概不负责，包括但不限于由脚本错误引起的任何损失和损害。
-  4. 转载脚本请注明来源，欢迎分享，拒绝倒卖，倒卖🐕必死🐎。
-  5. 如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
-  6. 所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明, 本人保留随时更改或补充此声明的权利, 一旦您使用或复制了此脚本，即视为您已接受此免责声明。
-  7. 欢迎对[本仓库](https://github.com/Yuheng0101/X)Star✅，但请不要Fork❌。
+
+1. 脚本只是针对基于 Quantumult X 和 Surge 对 Javascript 和 WEB 逆向的学习，不得用于商业用途，否则后果自负。
+2. 不保证脚本合法性、准确性、有效性，请根据情况自行判断，本人对此不承担任何保证责任。
+3. 本人对任何脚本引发的问题概不负责，包括但不限于由脚本错误引起的任何损失和损害。
+4. 转载脚本请注明来源，欢迎分享，拒绝倒卖，倒卖 🐕 必死 🐎。
+5. 如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
+6. 所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明, 本人保留随时更改或补充此声明的权利, 一旦您使用或复制了此脚本，即视为您已接受此免责声明。
+7. 欢迎对[本仓库](https://github.com/Yuheng0101/X)Star✅，但请不要 Fork❌。
 
 ## 脚本描述
-  解锁下方所有APP(仅限轻量版)
+
+解锁下方所有 APP(仅限轻量版)
 
 ## 下载地址
-  [50度灰](https://50.aff009.net/af/jDM3U)
 
-  [91短视频](https://dbf4801.zfijby.com/aff-hVbkx)
+[50 度灰](https://50.aff009.net/af/jDM3U)
 
-  [汤头条](https://ttt.aff009.net/af/caJtT)
+[91 短视频](https://dbf4801.zfijby.com/aff-hVbkx)
 
-  [微密圈](https://app.wmq.life/aff-nVJM)
+[汤头条](https://ttt.aff009.net/af/caJtT)
 
-  [小蓝视频](https://p4.gv009.fun/#/home)
+[微密圈](https://app.wmq.life/aff-nVJM)
 
-  [她趣](https://app.xttworld.com/af/bnjU)
+[小蓝视频](https://p4.gv009.fun/#/home)
 
-  [撸先生](http://b.sir010.co/)
+[她趣](https://app.xttworld.com/af/bnjU)
 
-  [抖阴Porn](https://dypj.app004.me/aff-atdvk)
+[撸先生](http://b.sir010.co/)
+
+[抖阴 Porn](https://dypj.app004.me/aff-atdvk)
+
 ******************************************
 # Quantumult X
 [mimt]
-hostname = *50a*,*bmafdxt*,*psovzwr*,*yxlauhm*,*yiqiapi*,*jiujiao*,*myb*api*,*hichatapi*,*tbrapi*,*wmqapi*,*gvlan*,*91av*,*xtt*,*dyweb*,*argaxqn*,*eoeicmg*
+hostname = *50a*,*bmafdxt*,*psovzwr*,*yxlauhm*,*yiqiapi*,*jiujiao*,*myb*api*,*hichatapi*,*tbrapi*,*wmqapi*,*gvlan*,*ksapi*,*nbpqfxr*,*91av*,*xtt*,*dyweb*,*argaxqn*,*eoeicmg*
 
 [rewrite_local]
 # 50度灰/汤头条/他趣
@@ -58,17 +73,6 @@ hostname = *50a*,*bmafdxt*,*psovzwr*,*yxlauhm*,*yiqiapi*,*jiujiao*,*myb*api*,*hi
 ^http[s]?:\/\/.*(gvlan|ksapi).*pwa\.php.*(home\/getConfig|user(s)?\/getBaseInfo|(mv|manhua|story)\/detail|mv\/(pwa_main|listOfFeature|getFeature)|ChargeVideo\/(upIndex|vipIndex|recommend))$ url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
 # 抖阴Porn
 ^http[s]?:\/\/.*(dyweb|argaxqn|eoeicmg).+\/pwa\.php$ url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
-
-# Surge
-[MITM]
-hostname = %APPEND% *50a*,*bmafdxt*,*psovzwr*,*yxlauhm*,*yiqiapi*,*jiujiao*,*myb*api*,*hichatapi*,*tbrapi*,*wmqapi*,*gvlan*,*91av*,*xtt*,*dyweb*,*argaxqn*,*eoeicmg*
-
-[Script]
-50度灰/汤头条/他趣 = type=http-response, pattern=^http[s]?:\/\/.*((50(aa|ab|apia)pi|xtt.*)\.com|tbrapi\.org)\/pwa\.php\/api\/(user\/userinfo|MvDetail\/(detail|xiao_detail)|home\/(getOpenAdsAndVersion|appcenter)|system\/getad)$, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js, timeout=60, script-update-interval=0
-91短视频/微密圈 = type=http-response, pattern=^http[s]?:\/\/.*(yiqiapi|jiujiao|myb[0-9]+api|wmqapi|psovzwr|bmafdxt|yxlauhm).*\/pwa\.php$, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js, timeout=60, script-update-interval=0
-撸先生 = type=http-response, pattern=^http[s]?:\/\/.*hichatapi.+\/api\.php$, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js, timeout=60, script-update-interval=0
-小蓝视频/快手 = type=http-response, pattern=^http[s]?:\/\/.*(gvlan|ksapi).*pwa\.php.*(home\/getConfig|user(s)?\/getBaseInfo|(mv|manhua|story)\/detail|mv\/(pwa_main|listOfFeature|getFeature)|ChargeVideo\/(upIndex|vipIndex|recommend))$, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js, timeout=60, script-update-interval=0
-抖阴Porn = type=http-response, pattern=^http[s]?:\/\/.*(dyweb|argaxqn|eoeicmg).+\/pwa\.php$, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js, timeout=60, script-update-interval=0
 
 ******************************************/
 const $ = new Env('绿色产业链通杀脚本')
@@ -115,7 +119,7 @@ const domain = domainReg.exec($request.url)[0]
     .finally(() => $.done({ body: JSON.stringify(obj) }))
 async function handle50DHAndTQ(){console.log("\n===🔔50度灰===\n");var a=await DecryptResp(obj.data,"50dh");try{a=JSON.parse(a)}catch(a){}if(/system\/getad/.test($request.url))a.data=[];else if(/home\/appcenter/.test($request.url))a.data.banner=[];else if(/home\/getOpenAdsAndVersion/.test($request.url))a.data.ads={},a.data.pop_ads=[];else if(/\/user\/userinfo/.test($request.url))a.isVip=!0,a.daily_view=999,a.data.nickname="𝒀𝒖𝒉𝒆𝒏𝒈",a.data.followed=999,a.data.fabulous_count=999,a.data.videos_count=999,a.data.vip=!0,a.data.free_view_cnt=999,a.data.coins=999;else if(/MvDetail\/xiao_detail/.test($request.url))a.data.detail.preview_video=__fuck(a.data.detail.preview_video),a.data.detail.is_pay=!0,a.data.detail.status=2,a.isVip=!0;else if(/\/MvDetail\/(detail)/.test($request.url)){a.isVip=!0,a.daily_view=999;const t=__fuck(a.data.detail.preview_video);a.data.banner=[],a.data.detail.source_240=t,a.data.detail.preview_video=t,a.data.detail.is_pay=!0}obj.data=await EncryptReq(JSON.stringify(JSON.stringify(a)),"50dh")}
 async function handle91DSPORWMQ(a){console.log(`\n===🔔${0===a?"91短视频":"微密圈"}===\n`);let t=await DecryptResp(obj.data,"91dsp");try{t=JSON.parse(t)}catch(a){}if(t.hasOwnProperty("data")||$.done({}),t.data.hasOwnProperty("pop_ads")&&t.data.pop_ads.length>0&&(t.data.popupWindowAds={},t.data.isVip=!0,t.data.vip_level=6,t.data.pop_ads=[]),t.data.hasOwnProperty("info")){const a={...t.data.info,username:"13888888888",phone:"13888888888",nickname:"𝒀𝒖𝒉𝒆𝒏𝒈",topbanner:[],invitedNum:999,isVip:!0,watchCount:999,watchStr:"无限",city:"M78",canWatchCount:"999",coins:999999,fans:"999",followed:"999",fabulous:"999",videosCount:"999",vip_level:6,buy_count:999,age:18,exp:4084941654,level:99,coins_expired:4084941654,coins_free:!0};t.data.info=a,t.isVip=!0}if(t.data.hasOwnProperty("recommendedData")&&t.data.recommendedData.length>0&&(t.data.isVip=!0,t.data.vip_level=4,t.data.pop_ads=[],t.data.recommendedData=t.data.recommendedData.map(a=>({...a,playUrl:__fuck(a.playUrl),hasBuy:!0}))),t.data.hasOwnProperty("playUrl")||t.data.hasOwnProperty("previewUrl")){let a=t.data.hasOwnProperty("playUrl")?t.data.playUrl:t.data.previewUrl;var e=__fuck(a);t.data.hasBuy=!0,t.data.is_club_fans=!0,t.data.is_download=!0,t.data.playUrl=e,t.data.previewUrl=e}t.data.hasOwnProperty("banner")&&(t.data.banner=[]),obj.data=await EncryptReq(JSON.stringify(t),"91dsp")}
-async function handleLXS(){console.log("\n===🔔撸先生===\n");var a=await DecryptResp(obj.data,"lxs");try{a=JSON.parse(a)}catch(a){}var{status:t,data:e}=a;if(200!=+t||Array.isArray(e))throw"非法数据 !";if(e&&e.advert&&e.advert.length&&(a.data.advert=[]),e&&e.advert_lable&&e.advert_lable.length&&(a.data.advert=[]),e&&e.alert_ad&&(a.data.alert_ad.url="https://github.com/Yuheng0101/X"),e&&e.openAds&&(a.data.openAds={}),e&&e.hasOwnProperty("oauth_id")&&e.hasOwnProperty("uuid")&&e.hasOwnProperty("uid")&&(a.data.username="𝒀𝒖𝒉𝒆𝒏𝒈",a.data.expired_at=4085561456,a.data.vip_notice=1,a.data.balance=99999,a.data.privilege_num=99,a.data.score=99999,a.data.left_num=999,a.data.have_num=999,a.data.validate=1,a.data.group_url="https://t.me/yqc_123"),e&&e.hasOwnProperty("is_pay")){if(!e.hasOwnProperty("v_ext"))throw"非法数据 !";a.data.is_pay=1}a.hasOwnProperty("line")&&a.line.length>0&&(a.line=a.line.map(a=>({...a,info:{...a.info,can_change:{yes_no:1,msg:""}}}))),e&&e.hasOwnProperty("privilege")&&(a.data.privilege.can_change_look.yes_no=1,a.data.privilege.can_change_look.msg="",a.data.privilege.can_change_video.yes_no=1,a.data.privilege.can_change_video.msg=""),obj.data=await EncryptReq(JSON.stringify(a),"lxs")}
+async function handleLXS(){console.log("\n===🔔撸先生===\n");var a=await DecryptResp(obj.data,"lxs");try{a=JSON.parse(a)}catch(a){}var{status:t,data:e}=a;if(200!=+t)throw"非法数据 !";if(Array.isArray(e)&&(a.data=a.data.filter(a=>"ads"!==a.v_ext)),e&&e.advert&&e.advert.length&&(a.data.advert=[]),e&&e.advert_lable&&e.advert_lable.length&&(a.data.advert=[]),e&&e.alert_ad&&(a.data.alert_ad.url="https://github.com/Yuheng0101/X"),e&&e.openAds&&(a.data.openAds={}),e&&e.hasOwnProperty("oauth_id")&&e.hasOwnProperty("uuid")&&e.hasOwnProperty("uid")&&(a.data.username="𝒀𝒖𝒉𝒆𝒏𝒈",a.data.expired_at=4085561456,a.data.vip_notice=1,a.data.balance=99999,a.data.privilege_num=99,a.data.score=99999,a.data.left_num=999,a.data.have_num=999,a.data.validate=1,a.data.group_url="https://t.me/yqc_123"),e&&e.hasOwnProperty("is_pay")){if(!e.hasOwnProperty("v_ext"))throw"非法数据 !";a.data.is_pay=1}a.hasOwnProperty("line")&&a.line.length>0&&a.line.forEach(a=>{for(const t in a.line)a.line[t]=__fuck(a.line[t]);a.info.can_change={yes_no:1,msg:""}}),a&&a.hasOwnProperty("data")&&a.data.hasOwnProperty("privilege")&&(a.data.privilege={can_change_look:{yes_no:1,msg:""},can_change_video:{yes_no:1,msg:""}}),console.log(`我是解锁后的decrypt:${JSON.stringify(a,null,2)}`),obj.data=await EncryptReq(JSON.stringify(a),"lxs")}
 async function handleTTT(){console.log("\n===🔔汤头条===\n");let a=await DecryptResp(obj.data,"ttt");try{a=JSON.parse(a)}catch(a){}if(/home\/getOpenAdsAndVersion/.test($request.url)?(a.data.ads={},a.data.pop_ads=[]):/\/user\/userinfo/.test($request.url)&&(a={...a,isVip:!0,daily_view:999,data:{...a.data,nickname:"𝒀𝒖𝒉𝒆𝒏𝒈",followed:999,fabulous_count:999,videos_count:999,vip:!0,free_view_cnt:999,coins:999}}),/\/MvDetail\/detail/.test($request.url)){const t=__fuck(a.data.detail.preview_video);a={...a,isVip:!0,daily_view:999,data:{...a.data,detail:{...a.data.detail,is_pay:!0,preview_video:t,preview_tip:"已为LSP解锁成功"},banner:[]}}}obj.data=await EncryptReq(JSON.stringify(a),"ttt")}
 async function handleXLSP(){console.log("\n===🔔小蓝视频===\n");let a=await DecryptResp(obj.data,"xlsp");try{a=JSON.parse(a)}catch(a){}/getConfig/.test($request.url)&&(a.data.pop_ads_v2=[]),/listOfFeature/.test($request.url)&&(a.data.ads=[]),/getBaseInfo/.test($request.url)&&(a.data={...a.data,nickname:"𝒀𝒖𝒉𝒆𝒏𝒈",vip_level:4,videos_count:999,live_count:999,level:99,is_vip:1,vvLevel:99,watch_count:999,can_watch:999,auth_level:5,auth_status:1,expired_str:"永久",coins_total:999,fans_count:999,followed_count:999,likes_count:999}),/mv\/detail/.test($request.url)&&(a.data={...a.data,preview_video:a.data.preview_video.replace(/.*play/,"long"),is_pay:1,preview_tip:"𝒀𝒖𝒉𝒆𝒏𝒈已为你解锁",status:1}),/(manhua|story)\/detail/.test($request.url)&&(a.data={...a.data,is_pay:1,is_free:1,status:1}),obj.data=await EncryptReq(JSON.stringify(a),"xlsp")}
 async function handleKS(){console.log("\n===🔔快手===\n");let a=await DecryptResp(obj.data,"ks");try{a=JSON.parse(a)}catch(a){}/getConfig/.test($request.url)&&(a.data.pop_ads_v2=[]),/listOfFeature/.test($request.url)&&(a.data.ads=[]),/getBaseInfo/.test($request.url)&&(a.data={...a.data,nickname:"𝒀𝒖𝒉𝒆𝒏𝒈",vip_level:4,videos_count:999,live_count:999,level:99,is_vip:1,isVV:1,vvLevel:99,topNav:[],leftNav:[],watch_count:999,can_watch:999,auth_level:5,auth_status:1,expiredStr:"永久",coins_total:999,fans_count:999,followed_count:999,likes_count:999}),/mv\pwa_main/.test($request.url)&&(a.data.banner=[]),/ChargeVideo\/(upIndex|vipIndex)/.test($request.url)&&(a.data.ads=[]),/mv\/getFeature/.test($request.url)&&(a.data=a.data.map(a=>({...a,playURL:__fuck(a.playURL),hotAds:[],hasBuy:!0}))),/ChargeVideo\/recommend/.test($request.url)&&(a.data.list=a.data.list.map(a=>({...a,playURL:__fuck(a.playURL),hotAds:[],hasBuy:!0}))),/mv\/detail/.test($request.url)&&(a.data={...a.data,preview_video:__fuck(a.data.preview_video),is_pay:1,preview_tip:"𝒀𝒖𝒉𝒆𝒏𝒈已为你解锁",status:1}),/(manhua|story)\/detail/.test($request.url)&&(a.data={...a.data,is_pay:1,is_free:1,status:1}),obj.data=await EncryptReq(JSON.stringify(a),"ks")}
