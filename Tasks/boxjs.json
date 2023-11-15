@@ -325,6 +325,22 @@
         "https://raw.githubusercontent.com/Yuheng0101/X/main/Assets/ql.png"
       ],
       "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/ql.js"
+    },
+    {
+      "id": "yuheng.60s",
+      "name": "每天60秒读懂世界",
+      "descs_html": [
+        "<a target='_blank' href='https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/60s.js'>跳转脚本</a>"
+      ],
+      "keys": [],
+      "settings": [],
+      "author": "@yuheng",
+      "repo": "https://github.com/Yuheng0101/X",
+      "icons": [
+        "https://raw.githubusercontent.com/Yuheng0101/X/main/Assets/60s.png",
+        "https://raw.githubusercontent.com/Yuheng0101/X/main/Assets/60s.png"
+      ],
+      "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/60s.js"
     }
   ]
 }
