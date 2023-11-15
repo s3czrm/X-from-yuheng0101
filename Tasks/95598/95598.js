@@ -597,7 +597,7 @@ async function getLastMonthElcFee(index) {
         if (Number(totalAmt) == 0 && Number(totalPq) == 0) {
             console.log(`❗ 上月用电量账单未出`)
         } else {
-            if (Number(totalAmt) > 0) Message += `\n\n上个花费: ${totalAmt}元`
+            if (Number(totalAmt) > 0) Message += `\n\n上月花费: ${totalAmt}元`
             if (Number(totalPq) > 0) Message += `\t上月用电: ${totalPq}度`
         }
     } catch (e) {
