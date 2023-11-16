@@ -1,0 +1,11 @@
+#!name=糖心𝐕𝐋𝐎𝐆
+#!desc=解锁会员视频+净化
+
+[Script]
+
+http-response ^https?:\/\/tx.*\.com\/h5\/(user\/info|movie\/(block|search)|system\/info)$ script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/TXVLOG/txvlog.js, requires-body=true, timeout=60 ,tag=TXVLOGNOADS
+http-request ^https?:\/\/tx.*\.com\/h5\/movie\/detail$ script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/TXVLOG/txvlog.js, requires-body=true, timeout=60 ,tag=TXVLOGCRACK
+
+[MITM]
+
+hostname = txh*.com,txk*.com,tx*.com
