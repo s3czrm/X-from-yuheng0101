@@ -43,7 +43,7 @@ async function ModifyResponseBody() {
         decrypted.data = {
             ...decrypted.data,
             nickname: '𝘠𝘶𝘩𝘦𝘯𝘨',
-            headico: 'https://xsli.jinshengwenhua.xyz/media/headico/weimi/17.bnc?ext=.jpg',
+            headico: 'https://avatars.githubusercontent.com/u/50571734?s=144&u=9626b891a9e3fb3f73e38fb2f9d9583a2d78e9fe&v=4',
             sign: `https://t.me/yqc_123`,
             is_vip: 'y',
             is_up: 'y',
