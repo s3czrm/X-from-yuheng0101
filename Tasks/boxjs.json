@@ -341,6 +341,42 @@
         "https://raw.githubusercontent.com/Yuheng0101/X/main/Assets/60s.png"
       ],
       "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/60s.js"
+    },
+    {
+      "id": "yuheng.top",
+      "name": "热搜聚合",
+      "descs_html": [
+        "<p></p>",
+        "<p>weibo ==> 微博</p>",
+        "<p>zhihu ==> 知乎</p>",
+        "<p>toutiao ==> 头条</p>",
+        "<p>douyin ==> 抖音</p>",
+        "<p>baidu ==> 百度</p>",
+        "<p>tieba ==> 贴吧</p>",
+        "<p>bilibili ==> 哔哩哔哩</p>",
+        "<h2 style='color: #00ff00;'>填写前方标识</h2>",
+        "<h2 style='color: #ff0000;margin-top:20px;'>不是中文 ❗</h2>",
+        "<h2 style='color: #ff0000;margin-top:20px;'>不是中文 ❗</h2>",
+        "<h2 style='color: #ff0000;margin:20px 0;'>不是中文 ❗</h2>",
+        "<a target='_blank' href='https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/top.js'>跳转脚本</a>"
+      ],
+      "keys": ["top_user_select"],
+      "settings": [
+        {
+          "id": "top_user_select",
+          "name": "手动选择通知类型",
+          "val": null,
+          "type": "text",
+          "desc": ""
+        }
+      ],
+      "author": "@yuheng",
+      "repo": "https://github.com/Yuheng0101/X",
+      "icons": [
+        "https://is3-ssl.mzstatic.com/image/thumb/Purple126/v4/9a/d8/77/9ad877c6-e3d7-61a1-3911-5036239a41a6/AppIcon-1x_U007emarketing-0-7-0-0-sRGB-85-220.png/144x144bb.png",
+        "https://is3-ssl.mzstatic.com/image/thumb/Purple126/v4/9a/d8/77/9ad877c6-e3d7-61a1-3911-5036239a41a6/AppIcon-1x_U007emarketing-0-7-0-0-sRGB-85-220.png/144x144bb.png"
+      ],
+      "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/top.js"
     }
   ]
 }
