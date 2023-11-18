@@ -1,381 +1,333 @@
-const $ = new Env("青龙");
-
-let QL_HOST = "";
-
-let QL_CLIENT_ID = "";
-
-let QL_CLIENT_SECRET = "";
-
-let ql = null;
-
+const $ = new Env('京东COOKIE同步青龙')
+$.isNode() && require('dotenv').config()
+let QL_HOST = $.isNode() ? process.env.QL_HOST : $.getdata('yuheng_ql_host') || ''
+let QL_CLIENT_ID = $.isNode() ? process.env.QL_CLIENT_ID : $.getdata('yuheng_ql_clientid') || ''
+let QL_CLIENT_SECRET = $.isNode() ? process.env.QL_CLIENT_SECRET : $.getdata('yuheng_ql_clientsecret') || ''
 !(async () => {
-  $.env.isNode && require("dotenv").config();
-
-  QL_HOST =
-    ($.env.isNode ? process.env.QL_HOST : $.getdata("yuheng_ql_host")) || "";
-
-  QL_CLIENT_ID =
-    ($.env.isNode
-      ? process.env.QL_CLIENT_ID
-      : $.getdata("yuheng_ql_clientid")) || "";
-
-  QL_CLIENT_SECRET =
-    ($.env.isNode
-      ? process.env.QL_CLIENT_SECRET
-      : $.getdata("yuheng_ql_clientsecret")) || "";
-
-  if (!QL_HOST || !QL_CLIENT_ID || !QL_CLIENT_SECRET) {
-    $.log("❌请填写青龙面板地址和密钥");
-    return;
-  }
-  console.log(
-    `获取到的青龙面板地址: ${QL_HOST}\n获取到的青龙面板 Client_ID: ${QL_CLIENT_ID}\n获取到的青龙面板 Client_Secret: ${QL_CLIENT_SECRET}\n`
-  );
-  ql = new QingLong(QL_HOST, QL_CLIENT_ID, QL_CLIENT_SECRET);
-  if (!QL_HOST || !QL_CLIENT_ID || !QL_CLIENT_SECRET) {
-    $.log("请填写青龙面板地址和密钥");
-    return;
-  }
-  try {
-    await ql.checkLogin();
-    if (ql.token) {
-      $.notify("青龙面板", "", "✅测试连接成功！");
-    } else {
-      $.notify("青龙面板", "", "❌测试连接失败, 请检查账号密码是否正确!");
+    if (!QL_HOST || !QL_CLIENT_ID || !QL_CLIENT_SECRET) {
+        $.log('请填写青龙面板地址和密钥')
+        return
     }
-  } catch (e) {
-    throw e;
-  }
+    ql = new QingLong(QL_HOST, QL_CLIENT_ID, QL_CLIENT_SECRET)
+    try {
+        await ql.checkLogin()
+        if (ql.token) {
+            $.msg('青龙面板', '', '✅测试连接成功！')
+        } else {
+            $.msg('青龙面板', '', '❌测试连接失败, 请检查账号密码是否正确!')
+        }
+    } catch (e) {
+        throw e
+    }
 })()
-  .catch((e) => $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, ""))
-  .finally(() => $.done());
+    .catch((e) => $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, ''))
+    .finally(() => $.done())
 /*
 对接青龙面板
 适配 Node.js、QX、Loon、Surge等平台
 */
 function QingLong(HOST, Client_ID, Client_Secret) {
-  return new (class {
-    /**
-     * 对接青龙API
-     * @param {*} HOST http://127.0.0.1:5700
-     * @param {*} Client_ID xxx
-     * @param {*} Client_Secret xxx
-     */
-    constructor(HOST, Client_ID, Client_Secret) {
-      this.host = HOST ? (HOST.endsWith("/") ? HOST : HOST + "/") : "";
-      this.clientId = Client_ID;
-      this.clientSecret = Client_Secret;
-      this.token = "";
-      this.envs = [];
-    }
-    // 检查登录状态
-    async checkLogin() {
-      var tokenObj = JSON.parse($.getdata("yuheng_ql_token") || "{}");
-      if (Object.keys(tokenObj).length) {
-        const { token, expiration } = tokenObj;
-        const currentTime = new Date().getTime();
-        if (currentTime > expiration) {
-          $.log("❌The token has expired");
-          await this.getAuthToken();
-        } else {
-          this.token = token;
-          $.log(
-            `✅The token is successfully obtained (${
-              this.token
-            }) from cache and is valid until ${$.time(
-              "yyyy-MM-dd HH:mm:ss",
-              expiration
-            )}`
-          );
+    const Request = (options, method = 'GET') => {
+        if (($.isNode() && options.hasOwnProperty('use_proxy') && options.use_proxy) || options.use_proxy === undefined) {
+            require('dotenv').config()
+            const PROXY_HOST = process.env.PROXY_HOST || '127.0.0.1'
+            const PROXY_PORT = process.env.PROXY_PORT || 7890
+            const tunnel = require('tunnel')
+            const agent = { https: tunnel.httpsOverHttp({ proxy: { host: PROXY_HOST, port: PROXY_PORT * 1 } }) }
+            Object.assign(options, { agent })
         }
-      } else {
-        await this.getAuthToken();
-      }
+        return new Promise((resolve, reject) => {
+            $.http[method.toLowerCase()](options)
+                .then((response) => {
+                    var resp = response.body
+                    try {
+                        resp = JSON.parse(resp)
+                    } catch (e) {}
+                    resolve(resp)
+                })
+                .catch((err) => reject(err))
+        })
     }
-    // 获取用户密钥
-    async getAuthToken() {
-      const options = {
-        url: `${this.host}open/auth/token`,
-        params: {
-          client_id: this.clientId,
-          client_secret: this.clientSecret,
-        },
-      };
-      try {
-        const { code, data, message } = await $.request(options);
-        if (code === 200) {
-          const { token, token_type, expiration } = data;
-          $.log(
-            `✅The token is successfully obtained: ${token} and is valid until ${$.time(
-              "yyyy-MM-dd HH:mm:ss",
-              expiration * 1e3
-            )}`
-          );
-          this.token = `${token_type} ${token}`;
-          $.setdata(
-            JSON.stringify({
-              token: this.token,
-              expiration: expiration * 1e3,
-            }),
-            "yuheng_ql_token"
-          );
-        } else {
-          throw message || "Failed to obtain user token.";
+    return new (class {
+        /**
+         * 对接青龙API
+         * @param {*} HOST http://127.0.0.1:5700
+         * @param {*} Client_ID xxx
+         * @param {*} Client_Secret xxx
+         */
+        constructor(HOST, Client_ID, Client_Secret) {
+            this.host = HOST ? (HOST.endsWith('/') ? HOST : HOST + '/') : ''
+            this.clientId = Client_ID
+            this.clientSecret = Client_Secret
+            this.token = ''
+            this.envs = []
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-    /**
-     * 获取所有环境变量详情
-     */
-    async getEnvs() {
-      const options = {
-        url: `${this.host}open/envs`,
-        headers: {
-          Authorization: `${this.token}`,
-        },
-      };
-      try {
-        const { code, data, message } = await $.request(options);
-        if (code === 200) {
-          this.envs = data;
-          $.log(`✅Obtaining environment variables succeeded.`);
-        } else {
-          throw message || `Failed to obtain the environment variable.`;
+        // 检查登录状态
+        async checkLogin() {
+            var tokenObj
+            try {
+                tokenObj = JSON.parse($.getdata('yuheng_ql_token') || '{}')
+            } catch (e) {
+                console.log(`❌The token is invalid, please re-enter the token`)
+                await this.getAuthToken()
+                return false
+            }
+            if (Object.keys(tokenObj).length) {
+                const { token, expiration } = tokenObj
+                const currentTime = new Date().getTime()
+                if (currentTime > expiration) {
+                    $.log('❌The token has expired')
+                    await this.getAuthToken()
+                } else {
+                    this.token = token
+                    $.log(`✅The token is successfully obtained (${this.token}) from cache and is valid until ${$.time('yyyy-MM-dd HH:mm:ss', expiration)}`)
+                }
+            } else {
+                await this.getAuthToken()
+            }
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-    // 检查是否存在同名环境变量
-    checkEnv({ name, remarks, value }) {
-      // 单独处理环境变量名为JD_COOKIE的变量
-      const checkJDEnv = () => {
-        const pinMatch = value.match(/pin=(.+?);/);
-        if (pinMatch) {
-          const pin = pinMatch[1];
-          const index = this.envs.findIndex((item) =>
-            item.value.includes(`pin=${pin};`)
-          );
-          if (index > -1) {
-            $.log(`🆗Pin Matched: ${name}`);
-            return index;
-          } else {
-            $.log(`⭕No Pin Matched`);
-            return -1;
-          }
-        } else {
-          $.log(`⭕No Pin Matchedn`);
-          return -1;
+        // 获取用户密钥
+        async getAuthToken() {
+            const options = {
+                url: `${this.host}open/auth/token`,
+                params: {
+                    client_id: this.clientId,
+                    client_secret: this.clientSecret
+                }
+            }
+            try {
+                const { code, data, message } = await Request(options)
+                if (code === 200) {
+                    const { token, token_type, expiration } = data
+                    $.log(`✅The token is successfully obtained: ${token} and is valid until ${$.time('yyyy-MM-dd HH:mm:ss', expiration * 1e3)}`)
+                    this.token = `${token_type} ${token}`
+                    $.setdata(
+                        JSON.stringify({
+                            token: this.token,
+                            expiration: expiration * 1e3
+                        }),
+                        'yuheng_ql_token'
+                    )
+                } else {
+                    throw message || 'Failed to obtain user token.'
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
         }
-      };
-      if (name === "JD_COOKIE" || name === "JD_R_WSCK") return checkJDEnv();
-      const index = this.envs.findIndex((item) => item.name === name);
-      if (index === -1) return -1;
-      if (remarks) {
-        const remarksIndex = this.envs.findIndex(
-          (item) => item.remarks === remarks
-        );
-        if (remarksIndex === -1) return -1;
-        return remarksIndex;
-      }
-    }
-    /**
-     * 更新/新增环境变量 -> 适用于单个环境变量
-     * @param {*} obj {value:'变量值',name:'变量名',remarks:'备注'}
-     * @returns {Boolean} true: 成功, false: 失败
-     */
-    async doUpdate(obj) {
-      try {
-        await this.checkLogin(); // 检查登录状态
-        this.envs.length == 0 && (await this.getEnvs()); // 获取所有环境变量详情
-        const _index = this.checkEnv(obj); // 检查是否存在同名环境变量
-        // 存在 -> 更新
-        if (_index > -1) {
-          $.log(`☑️Update the name of the environment variable: ${obj.name}`);
-          if (obj.value === this.envs[_index].value) {
-            $.log(`⚠️The environment variable value is the same, skipped`);
-            return false;
-          }
-          await this.updateEnv({
-            ...obj,
-            _id: this.envs[_index]._id,
-          });
-          // 不存在 -> 添加
-        } else {
-          $.log(`☑️Add the name of the environment variable: ${obj.name}`);
-          await this.addEnv([obj]);
+        /**
+         * 获取所有环境变量详情
+         */
+        async getEnvs() {
+            const options = {
+                url: `${this.host}open/envs`,
+                headers: {
+                    Authorization: `${this.token}`
+                }
+            }
+            try {
+                const { code, data, message } = await Request(options)
+                if (code === 200) {
+                    this.envs = data
+                    $.log(`✅Obtaining environment variables succeeded.`)
+                } else {
+                    throw message || `Failed to obtain the environment variable.`
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
         }
-        // 检查插入是否成功
-        const { value: afterVal } = await this.getEnvById(
-          this.envs[_index]._id
-        );
-        if (afterVal === obj.value) {
-          $.log(`✅The environment variable was updated successfully.`);
-          return true;
-        } else {
-          $.log(`❌Failed to update the environment variable.`);
-          return false;
+        // 检查是否存在同名环境变量
+        checkEnv({ name, remarks, value }) {
+            // 单独处理环境变量名为JD_COOKIE的变量
+            const checkJDEnv = () => {
+                const pinMatch = value.match(/pin=(.+?);/)
+                if (pinMatch) {
+                    const pin = pinMatch[1]
+                    const index = this.envs.findIndex((item) => item.value.includes(`pin=${pin};`))
+                    if (index > -1) {
+                        $.log(`🆗Pin Matched: ${pin}`)
+                        return index
+                    } else {
+                        $.log(`⭕No Pin Matched`)
+                        return -1
+                    }
+                } else {
+                    $.log(`⭕No Pin Matchedn`)
+                    return -1
+                }
+            }
+            if (name === 'JD_COOKIE' || name === 'JD_R_WSCK') return checkJDEnv()
+            const index = this.envs.findIndex((item) => item.name === name)
+            if (index === -1) return -1
+            if (remarks) {
+                const remarksIndex = this.envs.findIndex((item) => item.remarks === remarks)
+                if (remarksIndex === -1) return -1
+                return remarksIndex
+            }
         }
-      } catch (e) {
-        $.log(`❌Failed to update the environment variable.`);
-        return false;
-      }
-    }
-    /**
-     * 添加环境变量
-     * @param {*} array [{value:'变量值',name:'变量名',remarks:'备注'}]
-     */
-    async addEnv(array) {
-      const options = {
-        url: `${this.host}open/envs`,
-        method: "post",
-        headers: {
-          Authorization: `${this.token}`,
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify(array),
-      };
-      try {
-        const { code, message } = await $.request(options);
-        if (code === 200) {
-          $.log(`✅The environment variable was added successfully.`);
-        } else {
-          throw message || "Failed to add the environment variable.";
+        /**
+         * 更新/新增环境变量 -> 适用于单个环境变量
+         * @param {*} obj {value:'变量值',name:'变量名',remarks:'备注'}
+         * @returns {Boolean} true: 成功, false: 失败
+         */
+        async doUpdate(obj) {
+            try {
+                await this.checkLogin() // 检查登录状态
+                this.envs.length == 0 && (await this.getEnvs()) // 获取所有环境变量详情
+                let _index = this.checkEnv(obj) // 检查是否存在同名环境变量
+                // 存在 -> 更新
+                if (_index > -1) {
+                    $.log(`☑️Update the name of the environment variable: ${obj.name}`)
+                    if (obj.value === this.envs[_index].value) {
+                        $.log(`⚠️The environment variable value is the same, skipped`)
+                        return false
+                    }
+                    await this.updateEnv({
+                        ...obj,
+                        _id: this.envs[_index]._id
+                    })
+                    const { value: afterVal } = await this.getEnvById(this.envs[_index]._id)
+                    if (afterVal === obj.value) {
+                        return true
+                    } else {
+                        $.log(`❌Failed to update the environment variable.`)
+                        return false
+                    }
+                    // 不存在 -> 添加
+                } else {
+                    $.log(`☑️Add the name of the environment variable: ${obj.name}`)
+                    await this.addEnv([obj])
+                }
+            } catch (e) {
+                $.log(`❌Failed to update the environment variable.`)
+                return false
+            }
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-    /**
-     * 修改环境变量
-     * @param {*} obj {value:'变量值',name:'变量名',remarks:'备注',id:0}
-     */
-    async updateEnv(obj) {
-      const options = {
-        url: `${this.host}open/envs`,
-        method: "put",
-        headers: {
-          Authorization: `${this.token}`,
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify(obj),
-      };
-      try {
-        const { code, message } = await $.request(options);
-        if (code === 200) {
-          $.log(`✅The environment variable was updated successfully.`);
-          await this.enableEnv([obj._id]);
-        } else {
-          throw message || "Failed to update the environment variable.";
+        /**
+         * 添加环境变量
+         * @param {*} array [{value:'变量值',name:'变量名',remarks:'备注'}]
+         */
+        async addEnv(array) {
+            const options = {
+                url: `${this.host}open/envs`,
+                headers: {
+                    Authorization: `${this.token}`,
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify(array)
+            }
+            try {
+                const { code, message } = await Request(options, 'post')
+                if (code === 200) {
+                    $.log(`✅The environment variable was added successfully.`)
+                } else {
+                    throw message || 'Failed to add the environment variable.'
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-    /**
-     * 删除环境变量
-     * @param {*} ids [0,1,2] -> id数组
-     */
-    async deleteEnv(ids) {
-      const options = {
-        url: `${this.host}open/envs`,
-        method: "delete",
-        headers: {
-          Authorization: `${this.token}`,
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify(ids),
-      };
-      try {
-        const { code, message } = await $.request(options);
-        if (code === 200) {
-          $.log(`✅The environment variable was deleted successfully.`);
-        } else {
-          throw message || "Failed to delete the environment variable.";
+        /**
+         * 修改环境变量
+         * @param {*} obj {value:'变量值',name:'变量名',remarks:'备注',id:0}
+         */
+        async updateEnv(obj) {
+            const options = {
+                url: `${this.host}open/envs`,
+                method: 'put',
+                headers: {
+                    Authorization: `${this.token}`,
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify(obj)
+            }
+            try {
+                const { code, message } = await Request(options, 'post')
+                if (code === 200) {
+                    $.log(`✅The environment variable was updated successfully.`)
+                    await this.enableEnv([obj._id])
+                } else {
+                    throw message || 'Failed to update the environment variable.'
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-    /**
-     * 启用环境变量
-     * @param {*} ids [0,1,2] -> id数组
-     */
-    async enableEnv(ids) {
-      const options = {
-        url: `${this.host}open/envs/enable`,
-        method: "put",
-        headers: {
-          Authorization: `${this.token}`,
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify(ids),
-      };
-      try {
-        const { code, message } = await $.request(options);
-        if (code === 200) {
-          $.log(`✅The environment variable was enabled successfully.`);
-        } else {
-          throw message || "Failed to enable the environment variable.";
+        /**
+         * 删除环境变量
+         * @param {*} ids [0,1,2] -> id数组
+         */
+        async deleteEnv(ids) {
+            const options = {
+                url: `${this.host}open/envs`,
+                method: 'delete',
+                headers: {
+                    Authorization: `${this.token}`,
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify(ids)
+            }
+            try {
+                const { code, message } = await Request(options, 'post')
+                if (code === 200) {
+                    $.log(`✅The environment variable was deleted successfully.`)
+                } else {
+                    throw message || 'Failed to delete the environment variable.'
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-    /**
-     * 获取单个环境变量详情
-     * @param {*} id
-     * @returns 变量id
-     */
-    async getEnvById(id) {
-      const options = {
-        url: `${this.host}open/envs/${id}`,
-        headers: {
-          Authorization: `${this.token}`,
-        },
-      };
-      try {
-        const { code, data, message } = await $.request(options);
-        if (code === 200) {
-          return data;
-        } else {
-          throw message || `Failed to get the environment variable.`;
+        /**
+         * 启用环境变量
+         * @param {*} ids [0,1,2] -> id数组
+         */
+        async enableEnv(ids) {
+            const options = {
+                url: `${this.host}open/envs/enable`,
+                method: 'put',
+                headers: {
+                    Authorization: `${this.token}`,
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify(ids)
+            }
+            try {
+                const { code, message } = await Request(options, 'post')
+                if (code === 200) {
+                    $.log(`✅The environment variable was enabled successfully.`)
+                } else {
+                    throw message || 'Failed to enable the environment variable.'
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
         }
-      } catch (e) {
-        throw e
-          ? typeof e === "object"
-            ? JSON.stringify(e)
-            : e
-          : "Network Error.";
-      }
-    }
-  })(HOST, Client_ID, Client_Secret);
+        /**
+         * 获取单个环境变量详情
+         * @param {*} id
+         * @returns 变量id
+         */
+        async getEnvById(id) {
+            const options = {
+                url: `${this.host}open/envs/${id}`,
+                headers: {
+                    Authorization: `${this.token}`
+                }
+            }
+            try {
+                const { code, data, message } = await Request(options)
+                if (code === 200) {
+                    return data
+                } else {
+                    throw message || `Failed to get the environment variable.`
+                }
+            } catch (e) {
+                throw e ? (typeof e === 'object' ? JSON.stringify(e) : e) : 'Network Error.'
+            }
+        }
+    })(HOST, Client_ID, Client_Secret)
 }
 // prettier-ignore
-function Env(e){const t="undefined"!=typeof $task,s="undefined"!=typeof $loon,n="undefined"!=typeof $httpClient&&"undefined"!=typeof $utils,o="function"==typeof require&&"undefined"!=typeof $jsbox,r="function"==typeof require&&!o,i="undefined"!=typeof document,a="undefined"!=typeof $request,h="undefined"!=typeof importModule,l=()=>{const e=(e,t,s,n)=>{var o=function(e){switch(typeof e){case"string":return e;case"boolean":return e?"true":"false";case"number":return isFinite(e)?e:"";default:return""}};return t=t||"&",s=s||"=",null===e&&(e=void 0),"object"==typeof e?Object.keys(e).map(function(n){var r=encodeURIComponent(o(n))+s;return Array.isArray(e[n])?e[n].map(function(e){return r+encodeURIComponent(o(e))}).join(t):r+encodeURIComponent(o(e[n]))}).filter(Boolean).join(t):n?encodeURIComponent(o(n))+s+encodeURIComponent(o(e)):""},t=(e,t,s,n)=>{function o(e,t){return Object.prototype.hasOwnProperty.call(e,t)}t=t||"&",s=s||"=";var r={};if("string"!=typeof e||0===e.length)return r;var i=/\+/g;e=e.split(t);var a=1e3;n&&"number"==typeof n.maxKeys&&(a=n.maxKeys);var h=e.length;a>0&&h>a&&(h=a);for(var l=0;l<h;++l){var d,u,c,p,f=e[l].replace(i,"%20"),y=f.indexOf(s);y>=0?(d=f.substr(0,y),u=f.substr(y+1)):(d=f,u=""),c=decodeURIComponent(d),p=decodeURIComponent(u),o(r,c)?Array.isArray(r[c])?r[c].push(p):r[c]=[r[c],p]:r[c]=p}return r};return{stringify:e,parse:t}},d=(e="")=>{const o=["GET","POST","PUT","DELETE","HEAD","OPTIONS","PATCH"],a=/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,d=(o,d)=>{d="string"==typeof d?{url:d}:d;const u=e.baseURL;if(u&&!a.test(d.url||"")&&(d.url=u?u+d.url:d.url),d.params&&"GET"===o.toUpperCase()){const{stringify:e}=l(),t=e(d.params);d.url=-1===d.url.indexOf("?")?`${d.url}?${t}`:`${d.url}&${t}`}d.body&&d.headers&&!d.headers["Content-Type"]&&(d.headers["Content-Type"]="application/x-www-form-urlencoded"),d={...e,...d};const c=d.timeout,p={onRequest:()=>{},onResponse:e=>e,onTimeout:()=>{},...d.events};let f,y;if(p.onRequest(o,d),t)f=$task.fetch({method:o,...d});else if(s||n||r)f=new Promise((e,t)=>{const s=r?require("request"):$httpClient;s[o.toLowerCase()](d,(s,n,o)=>{s?t(s):e({statusCode:n.status||n.statusCode,headers:n.headers,body:o})})});else if(h){const e=new Request(d.url);e.method=o,e.headers=d.headers,e.body=d.body,f=new Promise((t,s)=>{e.loadString().then(s=>{t({statusCode:e.response.statusCode,headers:e.response.headers,body:s})}).catch(e=>s(e))})}else i&&(f=new Promise((e,t)=>{fetch(d.url,{method:o,headers:d.headers,body:d.body}).then(e=>e.json()).then(t=>e({statusCode:t.status,headers:t.headers,body:t.data})).catch(t)}));const g=c?new Promise((e,t)=>{y=setTimeout(()=>(p.onTimeout(),t(`${o} URL: ${d.url} exceeds the timeout ${c} ms`)),c)}):null;return(g?Promise.race([g,f]).then(e=>(clearTimeout(y),e)):f).then(e=>p.onResponse(e))},u={};return o.forEach(e=>u[e.toLowerCase()]=(t=>d(e,t))),u},u=e=>{const t=["𝟎","𝟏","𝟐","𝟑","𝟒","𝟓","𝟔","𝟕","𝟖","𝟗","𝐚","𝐛","𝐜","𝐝","𝐞","𝐟","𝐠","𝐡","𝐢","𝐣","𝐤","𝐥","𝐦","𝐧","𝐨","𝐩","𝐪","𝐫","𝐬","𝐭","𝐮","𝐯","𝐰","𝐱","𝐲","𝐳","𝐀","𝐁","𝐂","𝐃","𝐄","𝐅","𝐆","𝐇","𝐈","𝐉","𝐊","𝐋","𝐌","𝐍","𝐎","𝐏","𝐐","𝐑","𝐒","𝐓","𝐔","𝐕","𝐖","𝐗","𝐘","𝐙"],s={48:0,49:1,50:2,51:3,52:4,53:5,54:6,55:7,56:8,57:9,65:36,66:37,67:38,68:39,69:40,70:41,71:42,72:43,73:44,74:45,75:46,76:47,77:48,78:49,79:50,80:51,81:52,82:53,83:54,84:55,85:56,86:57,87:58,88:59,89:60,90:61,97:10,98:11,99:12,100:13,101:14,102:15,103:16,104:17,105:18,106:19,107:20,108:21,109:22,110:23,111:24,112:25,113:26,114:27,115:28,116:29,117:30,118:31,119:32,120:33,121:34,122:35};return e.replace(/[0-9A-z]/g,e=>t[s[e.charCodeAt(0)]])};return new class{constructor(){this.name=e,this.env={isQX:t,isLoon:s,isSurge:n,isJSBox:o,isNode:r,isBrowser:i,isRequest:a,isScriptable:h},this.logs=[],this.dataFile="box.dat",this.qs=l(),this.http=d(),this.operator=u,this.startTime=(new Date).getTime(),this.log("",`🔔${this.name}, 开始!`)}request(e){const t=(e.method||"GET").toUpperCase();if(r&&e.hasOwnProperty("use_proxy")&&e.use_proxy){require("dotenv").config();const t=process.env.PROXY_HOST||"127.0.0.1",s=process.env.PROXY_PORT||7890,n=require("tunnel"),o={https:n.httpsOverHttp({proxy:{host:t,port:1*s}})};Object.assign(e,{agent:o})}return new Promise((s,n)=>{this.http[t.toLowerCase()](e).then(e=>{var t=e.body;try{t=JSON.parse(e.body)}catch(e){}s(t)}).catch(e=>n(e))})}loaddata(){if(!r)return{};{this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const e=this.path.resolve(this.dataFile),t=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(e),n=!s&&this.fs.existsSync(t);if(!s&&!n)return{};{const n=s?e:t;try{return JSON.parse(this.fs.readFileSync(n))}catch(e){return{}}}}}writedata(){if(r){this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const e=this.path.resolve(this.dataFile),t=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(e),n=!s&&this.fs.existsSync(t),o=JSON.stringify(this.data);s?this.fs.writeFileSync(e,o):n?this.fs.writeFileSync(t,o):this.fs.writeFileSync(e,o)}}lodash_get(e,t,s){const n=t.replace(/\[(\d+)\]/g,".$1").split(".");let o=e;for(const e of n)if(o=Object(o)[e],void 0===o)return s;return o}lodash_set(e,t,s){return Object(e)!==e?e:(Array.isArray(t)||(t=t.toString().match(/[^.[\]]+/g)||[]),t.slice(0,-1).reduce((e,s,n)=>Object(e[s])===e[s]?e[s]:e[s]=Math.abs(t[n+1])>>0==+t[n+1]?[]:{},e)[t[t.length-1]]=s,e)}getdata(e){let t=this.getval(e);if(/^@/.test(e)){const[,s,n]=/^@(.*?)\.(.*?)$/.exec(e),o=s?this.getval(s):"";if(o)try{const e=JSON.parse(o);t=e?this.lodash_get(e,n,""):t}catch(e){t=""}}return t}setdata(e,t){let s=!1;if(/^@/.test(t)){const[,n,o]=/^@(.*?)\.(.*?)$/.exec(t),r=this.getval(n),i=n?"null"===r?null:r||"{}":"{}";try{const t=JSON.parse(i);this.lodash_set(t,o,e),s=this.setval(JSON.stringify(t),n)}catch(t){const r={};this.lodash_set(r,o,e),s=this.setval(JSON.stringify(r),n)}}else s=this.setval(e,t);return s}getval(e){return n||s?$persistentStore.read(e):t?$prefs.valueForKey(e):r?(this.data=this.loaddata(),this.data[e]):this.data&&this.data[e]||null}setval(e,o){return n||s?$persistentStore.write(e,o):t?$prefs.setValueForKey(e,o):r?(this.data=this.loaddata(),this.data[o]=e,this.writedata(),!0):this.data&&this.data[o]||null}bLog(...e){e.length>0&&(this.logs=[...this.logs,...e]),console.log(this.operator(e.join("\n")))}log(...e){e.length>0&&(this.logs=[...this.logs,...e]),console.log(e.join("\n"))}notify(e,i="",a="",h={},l=!0){const d=h["open-url"],u=h["media-url"];return new Promise(async c=>{if(t&&$notify(e,i,a,h),n){const t=u?`${a}\n多媒体:${u}`:a;$notification.post(e,i,t,{url:d})}if(s){const t={};d&&(t.openUrl=d),u&&(t.mediaUrl=u),"{}"===JSON.stringify(t)?$notification.post(e,i,a):$notification.post(e,i,a,t)}const p=`${a}${d?`\n点击跳转: ${d}`:""}${u?`\n多媒体: ${u}`:""}`;if(o){const t=require("push");t.schedule({title:e,body:`${i?`${i}\n`:""}${p}`})}if(r&&l)try{const t=require("./sendNotify");await t.sendNotify(`${e}\n${i}`,p)}catch(e){console.log("没有找到sendNotify.js文件")}console.log(`${e}\n${i}\n${p}\n\n`),c()})}time(e,t=null){const s=t?new Date(t):new Date;let n={"M+":s.getMonth()+1,"d+":s.getDate(),"H+":s.getHours(),"m+":s.getMinutes(),"s+":s.getSeconds(),"q+":Math.floor((s.getMonth()+3)/3),S:s.getMilliseconds()};/(y+)/.test(e)&&(e=e.replace(RegExp.$1,(s.getFullYear()+"").substr(4-RegExp.$1.length)));for(let t in n)new RegExp("("+t+")").test(e)&&(e=e.replace(RegExp.$1,1==RegExp.$1.length?n[t]:("00"+n[t]).substr((""+n[t]).length)));return e}wait(e){return new Promise(t=>setTimeout(t,e))}done(e={}){const i=(new Date).getTime(),a=(i-this.startTime)/1e3;this.log("",`🔔${this.name}, 结束! 🕛 ${a} 秒`),t||s||n?$done(e):r&&!o&&"undefined"!=typeof $context&&($context.headers=e.headers,$context.statusCode=e.statusCode,$context.body=e.body)}}(e)}
+function Env(t,e){class s{constructor(t){this.env=t}send(t,e="GET"){t="string"==typeof t?{url:t}:t;let s=this.get;return"POST"===e&&(s=this.post),new Promise((e,a)=>{s.call(this,t,(t,s,r)=>{t?a(t):e(s)})})}get(t){return this.send.call(this.env,t)}post(t){return this.send.call(this.env,t,"POST")}}return new class{constructor(t,e){this.name=t,this.http=new s(this),this.data=null,this.dataFile="box.dat",this.logs=[],this.isMute=!1,this.isNeedRewrite=!1,this.logSeparator="\n",this.encoding="utf-8",this.startTime=(new Date).getTime(),Object.assign(this,e),this.log("",`🔔${this.name}, 开始!`)}getEnv(){return"undefined"!=typeof $environment&&$environment["surge-version"]?"Surge":"undefined"!=typeof $environment&&$environment["stash-version"]?"Stash":"undefined"!=typeof module&&module.exports?"Node.js":"undefined"!=typeof $task?"Quantumult X":"undefined"!=typeof $loon?"Loon":"undefined"!=typeof $rocket?"Shadowrocket":void 0}isNode(){return"Node.js"===this.getEnv()}isQuanX(){return"Quantumult X"===this.getEnv()}isSurge(){return"Surge"===this.getEnv()}isLoon(){return"Loon"===this.getEnv()}isShadowrocket(){return"Shadowrocket"===this.getEnv()}isStash(){return"Stash"===this.getEnv()}toObj(t,e=null){try{return JSON.parse(t)}catch{return e}}toStr(t,e=null){try{return JSON.stringify(t)}catch{return e}}getjson(t,e){let s=e;const a=this.getdata(t);if(a)try{s=JSON.parse(this.getdata(t))}catch{}return s}setjson(t,e){try{return this.setdata(JSON.stringify(t),e)}catch{return!1}}getScript(t){return new Promise(e=>{this.get({url:t},(t,s,a)=>e(a))})}runScript(t,e){return new Promise(s=>{let a=this.getdata("@chavy_boxjs_userCfgs.httpapi");a=a?a.replace(/\n/g,"").trim():a;let r=this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");r=r?1*r:20,r=e&&e.timeout?e.timeout:r;const[i,o]=a.split("@"),n={url:`http://${o}/v1/scripting/evaluate`,body:{script_text:t,mock_type:"cron",timeout:r},headers:{"X-Key":i,Accept:"*/*"},timeout:r};this.post(n,(t,e,a)=>s(a))}).catch(t=>this.logErr(t))}loaddata(){if(!this.isNode())return{};{this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),a=!s&&this.fs.existsSync(e);if(!s&&!a)return{};{const a=s?t:e;try{return JSON.parse(this.fs.readFileSync(a))}catch(t){return{}}}}}writedata(){if(this.isNode()){this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),a=!s&&this.fs.existsSync(e),r=JSON.stringify(this.data);s?this.fs.writeFileSync(t,r):a?this.fs.writeFileSync(e,r):this.fs.writeFileSync(t,r)}}lodash_get(t,e,s){const a=e.replace(/\[(\d+)\]/g,".$1").split(".");let r=t;for(const t of a)if(r=Object(r)[t],void 0===r)return s;return r}lodash_set(t,e,s){return Object(t)!==t?t:(Array.isArray(e)||(e=e.toString().match(/[^.[\]]+/g)||[]),e.slice(0,-1).reduce((t,s,a)=>Object(t[s])===t[s]?t[s]:t[s]=Math.abs(e[a+1])>>0==+e[a+1]?[]:{},t)[e[e.length-1]]=s,t)}getdata(t){let e=this.getval(t);if(/^@/.test(t)){const[,s,a]=/^@(.*?)\.(.*?)$/.exec(t),r=s?this.getval(s):"";if(r)try{const t=JSON.parse(r);e=t?this.lodash_get(t,a,""):e}catch(t){e=""}}return e}setdata(t,e){let s=!1;if(/^@/.test(e)){const[,a,r]=/^@(.*?)\.(.*?)$/.exec(e),i=this.getval(a),o=a?"null"===i?null:i||"{}":"{}";try{const e=JSON.parse(o);this.lodash_set(e,r,t),s=this.setval(JSON.stringify(e),a)}catch(e){const i={};this.lodash_set(i,r,t),s=this.setval(JSON.stringify(i),a)}}else s=this.setval(t,e);return s}getval(t){switch(this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":return $persistentStore.read(t);case"Quantumult X":return $prefs.valueForKey(t);case"Node.js":return this.data=this.loaddata(),this.data[t];default:return this.data&&this.data[t]||null}}setval(t,e){switch(this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":return $persistentStore.write(t,e);case"Quantumult X":return $prefs.setValueForKey(t,e);case"Node.js":return this.data=this.loaddata(),this.data[e]=t,this.writedata(),!0;default:return this.data&&this.data[e]||null}}initGotEnv(t){this.got=this.got?this.got:require("got"),this.cktough=this.cktough?this.cktough:require("tough-cookie"),this.ckjar=this.ckjar?this.ckjar:new this.cktough.CookieJar,t&&(t.headers=t.headers?t.headers:{},void 0===t.headers.Cookie&&void 0===t.cookieJar&&(t.cookieJar=this.ckjar))}get(t,e=(()=>{})){switch(t.headers&&(delete t.headers["Content-Type"],delete t.headers["Content-Length"],delete t.headers["content-type"],delete t.headers["content-length"]),t.params&&(t.url+="?"+this.queryStr(t.params)),this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":default:this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.get(t,(t,s,a)=>{!t&&s&&(s.body=a,s.statusCode=s.status?s.status:s.statusCode,s.status=s.statusCode),e(t,s,a)});break;case"Quantumult X":this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:a,headers:r,body:i,bodyBytes:o}=t;e(null,{status:s,statusCode:a,headers:r,body:i,bodyBytes:o},i,o)},t=>e(t&&t.error||"UndefinedError"));break;case"Node.js":let s=require("iconv-lite");this.initGotEnv(t),this.got(t).on("redirect",(t,e)=>{try{if(t.headers["set-cookie"]){const s=t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();s&&this.ckjar.setCookieSync(s,null),e.cookieJar=this.ckjar}}catch(t){this.logErr(t)}}).then(t=>{const{statusCode:a,statusCode:r,headers:i,rawBody:o}=t,n=s.decode(o,this.encoding);e(null,{status:a,statusCode:r,headers:i,rawBody:o,body:n},n)},t=>{const{message:a,response:r}=t;e(a,r,r&&s.decode(r.rawBody,this.encoding))})}}post(t,e=(()=>{})){const s=t.method?t.method.toLocaleLowerCase():"post";switch(t.body&&t.headers&&!t.headers["Content-Type"]&&!t.headers["content-type"]&&(t.headers["content-type"]="application/x-www-form-urlencoded"),t.headers&&(delete t.headers["Content-Length"],delete t.headers["content-length"]),this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":default:this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient[s](t,(t,s,a)=>{!t&&s&&(s.body=a,s.statusCode=s.status?s.status:s.statusCode,s.status=s.statusCode),e(t,s,a)});break;case"Quantumult X":t.method=s,this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:a,headers:r,body:i,bodyBytes:o}=t;e(null,{status:s,statusCode:a,headers:r,body:i,bodyBytes:o},i,o)},t=>e(t&&t.error||"UndefinedError"));break;case"Node.js":let a=require("iconv-lite");this.initGotEnv(t);const{url:r,...i}=t;this.got[s](r,i).then(t=>{const{statusCode:s,statusCode:r,headers:i,rawBody:o}=t,n=a.decode(o,this.encoding);e(null,{status:s,statusCode:r,headers:i,rawBody:o,body:n},n)},t=>{const{message:s,response:r}=t;e(s,r,r&&a.decode(r.rawBody,this.encoding))})}}time(t,e=null){const s=e?new Date(e):new Date;let a={"M+":s.getMonth()+1,"d+":s.getDate(),"H+":s.getHours(),"m+":s.getMinutes(),"s+":s.getSeconds(),"q+":Math.floor((s.getMonth()+3)/3),S:s.getMilliseconds()};/(y+)/.test(t)&&(t=t.replace(RegExp.$1,(s.getFullYear()+"").substr(4-RegExp.$1.length)));for(let e in a)new RegExp("("+e+")").test(t)&&(t=t.replace(RegExp.$1,1==RegExp.$1.length?a[e]:("00"+a[e]).substr((""+a[e]).length)));return t}queryStr(t){let e="";for(const s in t){let a=t[s];null!=a&&""!==a&&("object"==typeof a&&(a=JSON.stringify(a)),e+=`${s}=${a}&`)}return e=e.substring(0,e.length-1),e}msg(e=t,s="",a="",r){const i=t=>{switch(typeof t){case void 0:return t;case"string":switch(this.getEnv()){case"Surge":case"Stash":default:return{url:t};case"Loon":case"Shadowrocket":return t;case"Quantumult X":return{"open-url":t};case"Node.js":return}case"object":switch(this.getEnv()){case"Surge":case"Stash":case"Shadowrocket":default:{let e=t.url||t.openUrl||t["open-url"];return{url:e}}case"Loon":{let e=t.openUrl||t.url||t["open-url"],s=t.mediaUrl||t["media-url"];return{openUrl:e,mediaUrl:s}}case"Quantumult X":{let e=t["open-url"]||t.url||t.openUrl,s=t["media-url"]||t.mediaUrl,a=t["update-pasteboard"]||t.updatePasteboard;return{"open-url":e,"media-url":s,"update-pasteboard":a}}case"Node.js":return}default:return}};if(!this.isMute)switch(this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":default:$notification.post(e,s,a,i(r));break;case"Quantumult X":$notify(e,s,a,i(r));break;case"Node.js":}if(!this.isMuteLog){let t=["","==============📣系统通知📣=============="];t.push(e),s&&t.push(s),a&&t.push(a),console.log(t.join("\n")),this.logs=this.logs.concat(t)}}log(...t){t.length>0&&(this.logs=[...this.logs,...t]),console.log(t.join(this.logSeparator))}logErr(t,e){switch(this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":case"Quantumult X":default:this.log("",`❗️${this.name}, 错误!`,t);break;case"Node.js":this.log("",`❗️${this.name}, 错误!`,t.stack)}}wait(t){return new Promise(e=>setTimeout(e,t))}done(t={}){const e=(new Date).getTime(),s=(e-this.startTime)/1e3;switch(this.log("",`🔔${this.name}, 结束! 🕛 ${s} 秒`),this.log(),this.getEnv()){case"Surge":case"Loon":case"Stash":case"Shadowrocket":case"Quantumult X":default:$done(t);break;case"Node.js":process.exit(1)}}}(t,e)}
