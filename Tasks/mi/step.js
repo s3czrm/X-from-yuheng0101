@@ -3,8 +3,8 @@
  * @channel https://t.me/yqc_123/
  * @feedback https://t.me/yqc_777/
  * @author 𝒀𝒖𝒉𝒆𝒏𝒈
- * @update 20230928
- * @version 1.0.0
+ * @update 20231118
+ * @version 1.0.1
 ******************************************
 🙇https://raw.githubusercontent.com/577fkj/mimotion/main/main.py
 ### 前言
@@ -60,18 +60,32 @@ function Xiaomi(user, pwd) {
         }
         // 登录参数 -- success
         async getCode() {
+            const isPhone = /^1\d{10}$/.test(this.username)
+            isPhone && (this.username = `+86${this.username}`)
             var options = {
-                url: `https://api-user.huami.com/registrations/+86${this.username}/tokens`,
+                url: `https://api-user.huami.com/registrations/${this.username}/tokens`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
                     'User-Agent': 'MiFit/4.6.0 (iPhone; iOS 14.0.1; Scale/2.00)'
                 },
-                body: qs.stringify({
-                    client_id: 'HuaMi',
-                    password: this.password,
-                    redirect_uri: 'https://s3-us-west-2.amazonaws.com/hm-registration/successsignin.html',
-                    token: 'access'
-                }),
+                body: qs.stringify(
+                    isPhone
+                        ? {
+                              client_id: 'HuaMi',
+                              password: this.password,
+                              redirect_uri: 'https://s3-us-west-2.amazonaws.com/hm-registration/successsignin.html',
+                              token: 'access'
+                          }
+                        : {
+                              state: 'REDIRECTION',
+                              client_id: 'HuaMi',
+                              password: this.password,
+                              redirect_uri: 'https://s3-us-west-2.amazonaws.com/hm-registration/successsignin.html',
+                              region: 'us-west-2',
+                              token: 'access',
+                              country_code: 'CN'
+                          }
+                ),
                 followRedirect: false, // NodeJS禁止重定向
                 opts: {
                     redirection: false // 圈X禁止重定向
