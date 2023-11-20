@@ -377,6 +377,37 @@
         "https://is3-ssl.mzstatic.com/image/thumb/Purple126/v4/9a/d8/77/9ad877c6-e3d7-61a1-3911-5036239a41a6/AppIcon-1x_U007emarketing-0-7-0-0-sRGB-85-220.png/144x144bb.png"
       ],
       "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/top.js"
+    },
+    {
+      "id": "yuheng.eshop",
+      "name": "Eshop打折监控",
+      "descs_html": [
+        "<a target='_blank' href='https://github.com/Yuheng0101/X/tree/main/Tasks/eshop'>【README.md】</a>"
+      ],
+      "keys": ["eshop_followedList","eshop_isClear"],
+      "settings": [
+        {
+          "id": "eshop_followedList",
+          "name": "关注游戏列表",
+          "val": null,
+          "type": "text",
+          "desc": ""
+        },
+        {
+          "id": "eshop_isClear",
+          "name": "是否清理缓存",
+          "val": false,
+          "type": "boolean",
+          "desc": ""
+        }
+      ],
+      "author": "@yuheng",
+      "repo": "https://github.com/Yuheng0101/X",
+      "icons": [
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple112/v4/71/e3/98/71e39886-3a94-fb5d-e15b-45beadd64ac0/AppIcon-1x_U007emarketing-0-5-0-85-220.jpeg/144x144.png",
+        "https://is1-ssl.mzstatic.com/image/thumb/Purple112/v4/71/e3/98/71e39886-3a94-fb5d-e15b-45beadd64ac0/AppIcon-1x_U007emarketing-0-5-0-85-220.jpeg/144x144.png"
+      ],
+      "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/eshop/eshop.js"
     }
   ]
 }
