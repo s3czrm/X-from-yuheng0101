@@ -2,11 +2,11 @@
  * @name 糖心𝐕𝐋𝐎𝐆
  * @channel https://t.me/yqc_123
  * @feedback https://t.me/yqc_777
- * @update 20231116
- * @version 1.0.0
+ * @update 20231120
+ * @version 1.0.1
 ******************************************/
 const $ = new Env('糖心𝐕𝐋𝐎𝐆')
-const isRequestBody = $request.body != undefined
+const isRequestBody = !!$request.body
 let body = ``
 ;(async () => (body = isRequestBody ? await ModifyRequestBody() : await ModifyResponseBody()))()
     .catch((e) => $.log('', `❗️${$.name}, 错误!`, e, ''))
