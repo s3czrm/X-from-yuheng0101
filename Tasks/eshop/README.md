@@ -10,7 +10,7 @@
 ```properties
 
 [rewrite_remote]
-https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/eshop/eshop.conf, update-interval=172800, opt-parser=true, enabled=true
+https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/eshop/eshop.js, update-interval=172800, opt-parser=true, enabled=true
 
 [task_local]
 30 7 * * * https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/eshop/eshop.js, tag=eshop打折监控, enabled=true
