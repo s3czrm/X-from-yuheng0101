@@ -2,9 +2,13 @@
  * @name 每天60秒读懂世界
  * @channel https://t.me/yqc_123
  * @feedback https://t.me/yqc_777
- * @version 1.0.2
+ * @version 1.0.3
 ******************************************
 ## 更新日志
+
+### 20231121
+
+    考虑到【微语】几乎展示不出来，提前到副标题。
 
 ### 20231114
 
@@ -205,9 +209,10 @@ class JunLa {
     const junla = new JunLa()
     const detailURL = await junla.GetList()
     const { title, thumb, content } = await junla.GetContent(detailURL)
+    const subTitle = content[content.length - 1] // 微语
     let message = []
     if ($.isNode()) {
-        message = content.join('\n').replace(/\n$/, '')
+        message = content.slice(0, -1).join('\n').replace(/\n$/, '')
     } else {
         for (const item of content) {
             if (message.join('\n').length >= MAX_MESSAGE_COUNT) {
@@ -223,7 +228,7 @@ class JunLa {
     } catch (e) {
         openURL = await ImageAPI()
     }
-    await SendNotify(title, '', message, { 'open-url': openURL, 'media-url': thumb })
+    await SendNotify(title, subTitle, message, { 'open-url': openURL, 'media-url': thumb })
 })()
     .catch((e) => $.log('', `❗️ ${$.name}, 失败! 原因: ${e}!`, ''))
     .finally(() => $.done())
