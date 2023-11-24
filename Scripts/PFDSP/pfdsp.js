@@ -7,7 +7,7 @@
  * @version 1.0.0
 ******************************************/
 const $ = new Env('泡芙短视频')
-let obj = JSON.parse($response.body)
+let obj = JSON.parse($response.body || '{}')
 ;(async () => {
     try {
         let decrypted = obj.hash ? await DecryptResp(obj.data) : obj.data
