@@ -51,7 +51,11 @@ cron "5 21 * * *" script-path=https://raw.githubusercontent.com/Yuheng0101/X/mai
 
 ## 说明
 
+> **【公益鸡】 请将 corntab 定时自行设置, 避免对服务器造成并发压力**
+
 > 仅实现查询类功能
+
+> 添加 [分流](https://gist.githubusercontent.com/Yuheng0101/a7a432754e79bf2f653e2fb6ec1aa8ea/raw/DIRECT.list) 规则并指向直连
 
 > 务必添加 [BoxJS 订阅](https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/boxjs.json)
 

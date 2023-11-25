@@ -8,7 +8,7 @@
  ******************************************/
 const $ = new Env('网上国网') // 建议一天查询一次即可, 无需频繁查询
 const baseURL = 'https://www.95598.cn'
-const domain = 'http://172.233.81.206:7788' // 感谢tg群友@woxihuanniya提供的服务器
+const domain = 'https://welfare.yuheng.best' // 感谢tg群友@woxihuanniya提供的服务器
 // const domain = 'http://192.168.1.20:7788' // 本地
 var requestCyu = null // keyCode和publicKey
 var requestBizrt = $.getdata('95598_bizrt') ? JSON.parse($.getdata('95598_bizrt')) : null // 登录信息

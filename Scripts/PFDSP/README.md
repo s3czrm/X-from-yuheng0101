@@ -22,7 +22,7 @@
 
 ## 使用方法
 
-> 务必将 `172.233.81.206` 设置为直连
+> 添加 [分流](https://gist.githubusercontent.com/Yuheng0101/a7a432754e79bf2f653e2fb6ec1aa8ea/raw/DIRECT.list) 规则并指向直连
 
 > [Quantumult X](https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/PFDSP/pfdsp.conf)
 
