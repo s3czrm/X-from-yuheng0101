@@ -268,19 +268,19 @@ async function JunLa() {
         }
     })()
 }
-/** 加载chreeio模块 */
+/** 加载cheerio模块 */
 async function loadCheerio() {
     return new Promise(async (resolve) => {
         $.getScript(
             'https://cdn.jsdelivr.net/gh/Yuheng0101/X@main/Utils/cheerio.js'
         ).then((fn) => {
             eval(fn)
-            const chreeio = createChreeio()
-            console.log(`✅ 60s读懂世界: chreeio加载成功, 请继续`)
-            resolve(chreeio)
+            const cheerio = createCheerio()
+            console.log(`✅ 60s读懂世界: cheerio加载成功, 请继续`)
+            resolve(cheerio)
         })
         .catch((e) => {
-            console.log(`❌ 60s读懂世界: chreeio加载失败, 原因: ${e || '网络开小差了'}`)
+            console.log(`❌ 60s读懂世界: cheerio加载失败, 原因: ${e || '网络开小差了'}`)
             resolve('')
         })
     })
