@@ -8,7 +8,7 @@
 
 ###
 
-    使用补齐版chreeio，感谢 @苍井灰灰 灰佬提供的转换思路。
+    使用补齐版cheerio，感谢 @苍井灰灰 灰佬提供的转换思路。
 
 ### 20231123
 
@@ -180,7 +180,7 @@ function chunkBySize(arr, size = MAX_MESSAGE_COUNT) {
 }
 /** 创建对象 */
 async function JunLa() {
-    const chreeio = await loadCheerio()
+    const cheerio = await loadCheerio()
     return new (class {
         constructor() {
             this.today = $.time('yyyy年MM月dd', new Date())
@@ -189,7 +189,7 @@ async function JunLa() {
         async GetList() {
             try {
                 const resp = await httpRequest({ url: `https://www.jun.la/60snews/` })
-                const Query = chreeio.load(resp)
+                const Query = cheerio.load(resp)
                 return Query('article')
                     .map((i, el) => {
                         let $el = Query(el)
@@ -209,7 +209,7 @@ async function JunLa() {
         async GetContent(url) {
             try {
                 const resp = await httpRequest({ url })
-                const Query = chreeio.load(resp)
+                const Query = cheerio.load(resp)
                 const container = Query('.single-content')
                 const title = Query('.entry-title').text()
                 const thumb = container.find('section p img').attr('src')
@@ -226,7 +226,7 @@ async function JunLa() {
         async GetContent2() {
             try {
                 const resp = await httpRequest({ url: `https://www.jun.la/news.html/` })
-                const Query = chreeio.load(resp)
+                const Query = cheerio.load(resp)
                 const container = Query('.entry-content')
                 const title = container
                     .find('p:contains("简报标题")')
