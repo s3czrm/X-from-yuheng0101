@@ -19,11 +19,11 @@
 
 ### 远程重写(抓取的时候打开, 抓取成功后关闭 -> 防止不必要的麻烦)
 
-> [Quantumult X](https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/Bdyy/bdyy.conf)
+> [Quantumult X](https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/Bdyy/bdyy.conf)
 
-> [Surge](https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/Bdyy/bdyy.sgmodule)
+> [Surge](https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/Bdyy/bdyy.sgmodule)
 
-> [Loon](https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/Bdyy/bdyy.plugin)
+> [Loon](https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/Bdyy/bdyy.plugin)
 
 ## Quantumult X 配置
 
