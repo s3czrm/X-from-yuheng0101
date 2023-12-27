@@ -3,7 +3,7 @@
  * @description 好男人专用脚本
  * @channel https://t.me/yqc_123
  * @feedback https://t.me/yqc_777
- * @version 2.0.0
+ * @version 2.0.1
 ******************************************
 
 ## 脚本注明
@@ -26,24 +26,25 @@
 
 ******************************************
 
-hostname = *.bmafdxt.com, *.yxlauhm.com, *.psovzwr.com, *.50*api.com, *.wmq*api*.com, *.tbrapi.org, *.hichatapi.com, *.longyuandingyi.com,*.zihzot.com,*.snowing.ren,*.vzcnqmr.cn,*beibeini3.cn,*.pili01a.net,*.hhclyjz.cn, *.bhhcdou.cn, *.xuxivwx.cn, *.sdtuxyh.cn, *.kngpdsz.cn, *.sugugaj.cn, *.mqqjrv.com, *.gnikvh.com, *.auhvylo.cn
+hostname = *.bmafdxt.com, *.yxlauhm.com, *.psovzwr.com, *.50*pi.com, *.wmq*api*.com, *.tbrapi.org, *.hichatapi.com, *.longyuandingyi.com,*.zihzot.com,*.snowing.ren,*.vzcnqmr.cn,*beibeini3.cn,*.pili01a.net,*.hhclyjz.cn, *.bhhcdou.cn, *.xuxivwx.cn, *.sdtuxyh.cn, *.kngpdsz.cn, *.sugugaj.cn, *.mqqjrv.com, *.gnikvh.com, *.auhvylo.cn, *.hefeixcx.xyz
 
 # 91短视频
 ^https?:\/\/.*(bmafdxt|yxlauhm|psovzwr).com/pwa.php url script-analyze-echo-response https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
 # 50度灰
-^https?:\/\/.*50.*api.com/pwa.php/api/(user/userinfo|MvDetail/(detail|xiao_detail)|home/(getOpenAdsAndVersion|appcenter)|system/getad) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
+^https?:\/\/.*50.*pi.com/pwa.php/api/(user/userinfo|MvDetail/(detail|xiao_detail)|home/(getOpenAdsAndVersion|appcenter)|system/getad) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
 # 微密圈
 ^https?:\/\/.*(wmq.*api\d+).com/pwa.php url script-analyze-echo-response https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
 # 撸先生
 ^https?:\/\/.*hichatapi.+\/api\.php$ url script-analyze-echo-response https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/lsp.js
 # 𝐀𝐋𝐋
-^(https?:\/\/)(?!long)([^./]+\.)*(longyuandingyi.com|zihzot.com|snowing.ren|vzcnqmr.cn|beibeini3.cn|pili01a.net|hhclyjz.cn|bhhcdou.cn|xuxivwx.cn|sdtuxyh.cn|kngpdsz.cn|sugugaj.cn|mqqjrv.com|gnikvh.com|auhvylo.cn)(\/.*)? url 302 $1long.$3$4
+^(https?:\/\/)(?!long)([^./]+\.)*(longyuandingyi.com|zihzot.com|snowing.ren|vzcnqmr.cn|beibeini3.cn|pili01a.net|hhclyjz.cn|bhhcdou.cn|xuxivwx.cn|sdtuxyh.cn|kngpdsz.cn|sugugaj.cn|mqqjrv.com|gnikvh.com|auhvylo.cn|hefeixcx.xyz)(\/.*)? url 302 $1long.$3$4
 
 ******************************************/
-// const server = `http://192.168.68.202:7788` // 测试服
+// const server = `http://192.168.10.2:7788` // 测试服
 const server = `https://welfare.yuheng.best` // 正式服
 const $ = new Env(`绿色产业链通杀`)
 const { origin } = ObjectKeys2LowerCase($request.headers)
+$.isResBody = typeof $response != 'undefined' && $response?.body
 $.is91dsp = /dsp\d+/.test(origin) // 91短视频
 $.iswmq = /wmq(|api)\d+/.test($request.url) // 微密圈
 $.is50dh = /hui\d+/.test(origin) // 50度灰
@@ -51,7 +52,7 @@ $.islusir = /hichatapi/.test($request.url) // 撸先生
 $.isPWA = /(pwa|api).php$/.test($request.url) // 结尾是pwa.php的请求
 // prettier-ignore
 $.defaultReq=()=>new Promise((e,r)=>{$.post({url:$request.url,headers:$request.headers,body:$request.body},(s,o,t)=>{s?r(s):e(o)})});
-$.defaultResponse = { body: $response?.body || `{}` }
+$.defaultResponse = { body: $.isResBody ? $response.body : '{}' }
 // prettier-ignore
 $.request=((e,s)=>new Promise(async(t,a)=>{$.isPWA&&($.defaultResponse=await $.defaultReq(),$.defaultResponse.status="HTTP/1.1 200 OK",delete $.defaultResponse.headers["Content-Encoding"],delete $.defaultResponse.headers["Transfer-Encoding"],delete $.defaultResponse.headers["Content-Length"]);let{body:n}=$.defaultResponse;try{n=JSON.parse(n)}catch(e){}$.post({url:server+"/api/91series/rewrite",method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({hy:e,yh:n.data,appid:s})},(e,s,d)=>{e?($.logErr(e),a(e)):(n.data=d,$.defaultResponse.body=JSON.stringify(n),t())})}));
 ;(async () => {
