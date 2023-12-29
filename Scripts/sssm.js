@@ -18,6 +18,10 @@
 
 [绳师SM](https://syz.xn--fiq2km75ifcu.com/sssm.html?v=xboY40kLeg)
 
+## 致谢
+
+[@苍井灰灰](https://t.me/wangfei021325)
+
 ******************************************
 hostname = *.sssm.info,*.xn--dpq21dn8asxam8v16q0j5c.com,*.xn--6oqq31af0beep69ei8x5eg.com,api22.yunpo.shop,d3kf96l0vqh02y.cloudfront.net,api.ddosapi.cyou,43.129.186.62,*.xn--6rt67t05sohibiq.com
 
