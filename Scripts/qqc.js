@@ -20,8 +20,10 @@
 # 调试区
 #^https?:\/\/qqcapi.*.com\/api\/(v2\/bootstrap|promo\/popup|(task_ad|module)\/list|operation\/ads|user\/read|investment|ad\/ad_position_config|bottom_nav|navs\/top|rich_new\/index|user\/privilege|v3\/shortvideo\/view\/\d+) url script-response-body http://192.168.68.173:5501/VIP/Scripts/qqc/source/qqc.js
 
-# 净化 + 解锁抖阴
-^https?:\/\/qqcapi.*.com\/api\/(v2\/bootstrap|promo\/popup|(task_ad|module)\/list|operation\/ads|user\/read|investment|ad\/ad_position_config|bottom_nav|navs\/top|rich_new\/index|user\/privilege|v3\/shortvideo\/view\/\d+) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/qqc.js
+# 去广告
+^https?:\/\/qqcapi.*.com\/api\/(promo\/popup|task_ad\/list|operation\/ads|investment|ad\/ad_position_config) url reject-200
+# 重写
+^https?:\/\/qqcapi.*.com\/api\/(v2\/bootstrap|module\/list|user\/read|bottom_nav|navs\/top|rich_new\/index|user\/privilege|v3\/shortvideo\/view\/\d+) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/qqc.js
 
 hostname = qqcapi.*.com
 
