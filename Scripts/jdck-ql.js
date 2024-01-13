@@ -113,22 +113,7 @@ function CookieUpdate(oldValue, newValue, path = 'cookie') {
     }
 }
 async function GetCookie() {
-    const url = `https://api.m.jd.com/api?functionId=GetJDUserInfoUnionForJD&appid=jd-cphdeveloper-m&body=%7B%22orgFlag%22%3A%22JD_PinGou_New%22%2C%22callSource%22%3A%22mainorder%22%2C%22channel%22%3A4%2C%22isHomewhite%22%3A0%2C%22businessId%22%3A%22null%22%2C%22sceneval%22%3A2%2C%22bizModelCode%22%3A%226%22%2C%22externalLoginType%22%3A%221%22%2C%22bizModeClientType%22%3A%22M%22%2C%22appId%22%3A%22m91d27dbf599dff74%22%2C%22token%22%3A%223852b12f8c4d869b7ed3e2b3c68c9436%22%2C%22tenantCode%22%3A%22jgm%22%2C%22uuid%22%3A%225388054384225658296%22%7D&loginType=2&uuid=5388054384225658296&openudid=5388054384225658296&h5st=20231118111340930%3Biimptzw9a9m939p7%3B7a102%3Btk03wde5b1d8818nK0Vt0RsHsOOy-zbWQkEUm4quvTrIKPLzhCXzNncysixhow59Qr1NfSwqXDamx5tVWlNBi57aUSCk%3B5c1dcf34b3f110ea47950f99447a73d424de948a1afd40000847b568c8779994%3B4.2%3B1700277220930%3B19b8793aa1a5eded15af3184736e1b667736a6adae452e88d0007c36fbce9cf342d364dca3824af21d4649e9eccc960885c145887c52c25a1d84814d95fdb349641ef4cbb234af2ef2293aa38f116aa2b4da10bc253404e76bcc08cd5d8e6ed914dabb53dfc7b33f3a048fab6d132dbfc8c06f681f8e6d7ddf63e21eeda833b5d5cadc66b2bb8bb3bdacf9f9133d4b759474298a6be8a07a9653fc9ff57141fa482428a29bf15ccfe0a6ddcf1bdd84b5f52c522d9ec01d0d4a3c738f96897307bf50f6f5553d72130c77b5df75e4409fa81d7c5fca480cab8ecad45e14a67b656bd3a87d05c063d3f4e8685e8590bf4c27b98ae17fa10117864b21a288afa53824d52720318d44a2874832a4aee27407589e7e9648b33d0cbd996fd0b88825d6&x-api-eid-token=null&sceneval=2&g_login_type=1&g_ty=ajax&appCode=ms0ca95114`
-    const method = `GET`
-    const headers = {
-        Accept: `application/json`,
-        'Accept-Encoding': `gzip, deflate, br`,
-        Origin: `https://home.m.jd.com`,
-        'x-referer-page': `https://home.m.jd.com/myJd/newhome.action`,
-        Cookie: `shshshfpa=b64613a2-271c-ec6d-c432-149b1ffcaad8-1699889577; shshshfpb=AAmB5a-CLEkYToicc7G3EMhSbH_yq2BaZiJV3UwAAABBqZF83ZjVhNTUxMGVjNzk3; PPRD_P=UUID.1699889573472185708641; __jda=122270672.1699889573472185708641.1699889573.1700058499.1700276918.9; __jdb=122270672.7.1699889573472185708641|9.1700276918; __jdc=122270672; __wga=1700277220935.1700276922096.1700058499283.1699889577118.3.6; cid=9; erp=; jxsid_s_t=1700277220960; jxsid_s_u=https%3A//home.m.jd.com/myJd/newhome.action; mba_muid=1699889573472185708641; mba_sid=1700276918633388737911928303.7; retina=1; shareChannel=; share_cpin=; share_gpin=; share_open_id=; source_module=; wqmnx1=MDEyNjM2MXQvbW9kb3Q1NDU2bCBuVW4xaWMpZXQxSyBHIG8wYjVTLzFyN1U0NFdPSEgpKQ%3D%3D; wxa_level=1; cd_eid=null; appCode=ms0ca95114; autoOpenApp_downCloseDate_jd_homePage=1700276919214_1; jxsid=17002769185496395342; TrackerID=yULt-hqOivIM9jbtuS-OXNQt-ZJ4NUHBUUJL8XTBMTkpSiqnD6EywNeSBWBWK3306q7cpIc5zTfmsd6Y4SGjadnGM61GH7u3o0QjvYvt9pu3SZJr5aS4oeBPpTKLwSTiqf2p1uCxa4peeIWWZ1pjHQ; pt_key=AAJlUkIEADBQO8es5Sr1oB_NTA6LdSv1DxsRfDurbObweJ50Ftv_IsA5cs3lUREKhTUuTM9XIFw; pt_pin=jd_7f5a5510ec797; pt_token=gitqywjz; pwdt_id=jd_7f5a5510ec797; sfstoken=tk01m91f51b8ba8sM3gxKzN4MkdmwY/akIG9Ct1/e+snAR3E6JJ1WA9NvqBwZLnGQRRRlUuj1j5cGCiVXf2+AtjjOghA; deviceName=Safari; deviceOS=ios; deviceOSVersion=14.3; deviceVersion=604.1; equipmentId=; fingerprint=9565d6b8ef88e0a81294beb2293c7008; sc_width=390; shshshfpx=b64613a2-271c-ec6d-c432-149b1ffcaad8-1699889577; __jdv=122270672%7Cdirect%7C-%7Cnone%7C-%7C1699889573473; visitkey=5388054384225658296; webp=1`,
-        Host: `api.m.jd.com`,
-        Connection: `keep-alive`,
-        'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1`,
-        Referer: `https://home.m.jd.com/myJd/newhome.action`,
-        'Accept-Language': `zh-cn`,
-        'x-rp-client': `h5_1.0.0`
-    }
-    let req = !!$request ? $request : { url, method, headers }
+    let req = !!$request ? $request : {}
     let Message = ''
     if (req.method != 'OPTIONS' && req.headers) {
         const CV = req.headers['Cookie'] || req.headers['cookie'] || ''
