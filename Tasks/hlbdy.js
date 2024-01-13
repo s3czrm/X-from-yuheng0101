@@ -106,7 +106,7 @@ async function Heiliao() {
                         return { title, link, status }
                     })
                     .get()
-                    .filter((item) => item.title && item.status === '热')
+                    .filter((item) => item.title && item.status === '热' && /\w+/.test(item.title))
                 /**
                  * 获取时间差
                  * @param {*} date YYYY/MM/DD
