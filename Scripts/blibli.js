@@ -50,8 +50,8 @@
 
 ******************************************
 
-hostname=*3m5sbs*,*yrvguhx*,*cbsbwr*,*hxcwqh*,*nocqvbo*,*5wxksg*,*bqisxzq*,*mdy069p*
+hostname=blbl.rtuyhtb.cc,ioeurn.yrvguhx.com,bblmfy.cbsbwr.com,bllmfy.hxcwqh.com,blkdfjg.nocqvbo.com
 
-^http[s]?:\/\/.*(3m5sbs|yrvguhx|cbsbwr|hxcwqh|nocqvbo|5wxksg|bqisxzq|mdy069p).*api\/app/(ping\/config|media\/home|user\/info|media\/play|comics\/detail|post\/list) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/mdsq.js
+^http[s]?:\/\/.*(rtuyhtb.cc|yrvguhx.com|cbsbwr.com|hxcwqh.com|nocqvbo.com)\/api\/app/(ping\/config|media\/home|user\/info|media\/play|comics\/detail|post\/list) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/mdsq.js
 
 ******************************************/

@@ -8,4 +8,4 @@ TXVLOGCRACK = type=http-request, pattern=^https?:\/\/tx.*\.com\/h5\/movie\/detai
 
 [MITM]
 
-hostname = %APPEND% txh*.com,txk*.com,tx*.com
+hostname = %APPEND% tx*.com

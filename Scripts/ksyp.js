@@ -11,9 +11,9 @@
  * @version 1.0.0
 ******************************************
 
-http[s]?://.*(rygbfhw|ixhmhua).+api/h5app/(ping/config|media/(play|homev2|short/recommend)|user/info|dating/girl/detail) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ksyp.js
+http[s]?://.*(rygbfhw|ixhmhua|uwkakpqkdc|keuaosld|zhdffvwsq|zhmsyaenq).+api/h5app/(ping/config|media/(play|homev2|short/recommend)|user/info|dating/girl/detail) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ksyp.js
 
-hostname=*rygbfhw*,*ixhmhua*
+hostname=*rygbfhw*,a.ixhmhua.xyz,woqasdfe.uwkakpqkdc.com,ifbgkeowq.keuaosld.com,jgtgjf.zhdffvwsq.com,jhbnvd.zhmsyaenq.com
 
 ******************************************/
 const $ = new Env('快手约炮')

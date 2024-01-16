@@ -15,4 +15,4 @@ http-request ^https?:\/\/tx.*\.com\/h5\/movie\/detail$ script-path=https://raw.g
 
 [MITM]
 
-hostname = txh*.com,txk*.com,tx*.com
+hostname = tx*.com
